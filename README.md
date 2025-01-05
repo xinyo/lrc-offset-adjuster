@@ -1,5 +1,7 @@
 # LRC Offset Adjuster README
 
+![Logo](icon.png)
+
 LRC Offset Adjuster is a Visual Studio Code extension designed for modifying and fine-tuning timestamp offsets in `.lrc` files. Whether you need to synchronize lyrics with audio or adjust timing for better accuracy, this extension simplifies the process.
 
 ---

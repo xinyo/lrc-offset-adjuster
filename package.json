@@ -3,6 +3,11 @@
   "displayName": "LRC Offset Adjuster",
   "description": "Adjust offsets for .lrc files",
   "version": "0.0.1",
+  "publisher": "xinyo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xinyo/lrc-offset-adjuster"
+  },
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -14,8 +19,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "lrc-offset-adjuster.helloWorld",
-        "title": "Hello World"
+        "command": "lrcAdjuster.adjustOffset",
+        "title": "Adjust LRC Offset"
       }
     ]
   },

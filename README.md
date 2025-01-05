@@ -1,71 +1,77 @@
-# lrc-offset-adjuster README
+# LRC Offset Adjuster README
 
-This is the README for your extension "lrc-offset-adjuster". After writing up a brief description, we recommend including the following sections.
-
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+LRC Offset Adjuster is a Visual Studio Code extension designed for modifying and fine-tuning timestamp offsets in `.lrc` files. Whether you need to synchronize lyrics with audio or adjust timing for better accuracy, this extension simplifies the process.
 
 ---
 
-## Following extension guidelines
+## Features
+
+- **Offset Adjustment**:
+  - Quickly add or subtract offsets (in milliseconds) to timestamps in `.lrc` files.
+  - Supports bulk updates for all timestamps in the file.
+- **Real-Time Feedback**:
+  - Automatically formats updated timestamps to ensure accuracy.
+  - Prevents negative timestamps.
+- **Command Palette Integration**:
+  - Use `Adjust LRC Offset` to specify an offset and apply changes instantly.
+
+### Example
+
+Original `.lrc` content:
+
+```
+[00:27.74]And as long as I've got my suit and tie
+```
+
+After applying a `+1000ms` offset:
+
+```
+[00:28.74]And as long as I've got my suit and tie
+```
+
+---
+
+## Requirements
+
+No additional dependencies are required. Ensure you have Visual Studio Code installed.
+
+---
+
+## Extension Settings
+
+This extension does not add any custom settings. All functionality is accessible via the Command Palette.
+
+---
+
+## Known Issues
+
+- **File Format Compatibility**: The extension currently supports only `.lrc` files with standard timestamp formatting (e.g., `[mm:ss.SS]`).
+- **Undo Limitations**: If many changes are applied at once, the undo stack may become overloaded in very large files.
+
+---
+
+## Release Notes
+
+### 1.0.0
+
+- Initial release of LRC Offset Adjuster.
+- Added support for adjusting offsets in `.lrc` files via the Command Palette.
+
+---
+
+## Extension Guidelines
 
 Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+- [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
 
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+---
 
 ## For more information
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+- [Visual Studio Code's Extension API](https://code.visualstudio.com/api)
+- [LRC File Format Reference](<https://en.wikipedia.org/wiki/LRC_(file_format)>)
 
-**Enjoy!**
+---
+
+**Enjoy Adjusting Your LRC Files!**

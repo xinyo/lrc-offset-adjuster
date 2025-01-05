@@ -1,26 +1,88 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  const disposable = vscode.commands.registerCommand(
+    "lrcAdjuster.adjustOffset",
+    async () => {
+      const editor = vscode.window.activeTextEditor;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "lrc-offset-adjuster" is now active!');
+      if (!editor) {
+        vscode.window.showErrorMessage("No active text editor found.");
+        return;
+      }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('lrc-offset-adjuster.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from LRC Offset Adjuster!');
-	});
+      const document = editor.document;
 
-	context.subscriptions.push(disposable);
+      if (!document.fileName.endsWith(".lrc")) {
+        vscode.window.showErrorMessage(
+          "This command only works for .lrc files."
+        );
+        return;
+      }
+
+      // Prompt user for offset in milliseconds
+      const offsetInput = await vscode.window.showInputBox({
+        prompt: "Enter offset in milliseconds (positive or negative):",
+        placeHolder:
+          "e.g., -1000 for 1 second earlier, 1000 for 1 second later",
+        validateInput: (value) =>
+          isNaN(Number(value)) ? "Please enter a valid number" : null,
+      });
+
+      if (!offsetInput) {
+        return; // User canceled
+      }
+
+      const offset = parseInt(offsetInput, 10);
+
+      if (isNaN(offset)) {
+        vscode.window.showErrorMessage("Invalid offset entered.");
+        return;
+      }
+
+      const text = document.getText();
+      const timestampRegex = /\[(\d{2}):(\d{2})\.(\d{2})]/g;
+
+      const updatedText = text.replace(
+        timestampRegex,
+        (match, mins, secs, ms) => {
+          const originalTime =
+            parseInt(mins) * 60 * 1000 + // Minutes to milliseconds
+            parseInt(secs) * 1000 + // Seconds to milliseconds
+            parseInt(ms) * 10; // Hundredths of a second to milliseconds
+
+          // Apply the offset
+          const adjustedTime = originalTime + offset;
+
+          // Ensure the adjusted time is not negative
+          const clampedTime = Math.max(0, adjustedTime);
+
+          // Convert back to mm:ss.SS
+          const minutes = Math.floor(clampedTime / 60000);
+          const seconds = Math.floor((clampedTime % 60000) / 1000);
+          const milliseconds = Math.floor((clampedTime % 1000) / 10);
+
+          return `[${minutes.toString().padStart(2, "0")}:${seconds
+            .toString()
+            .padStart(2, "0")}.${milliseconds.toString().padStart(2, "0")}]`;
+        }
+      );
+
+      const edit = new vscode.WorkspaceEdit();
+      const fullRange = new vscode.Range(
+        document.positionAt(0),
+        document.positionAt(text.length)
+      );
+      edit.replace(document.uri, fullRange, updatedText);
+
+      await vscode.workspace.applyEdit(edit);
+      vscode.window.showInformationMessage(
+        `Timestamps adjusted by ${offset} ms!`
+      );
+    }
+  );
+
+  context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
